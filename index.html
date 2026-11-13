@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Feedback</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .card {
+      background: #1e293b;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px;
+      padding: 24px 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      border: 1px solid #334155;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+      color: #ffffff;
+    }
+    p.subtitle {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 20px;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .opt-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #f1f5f9;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .opt-btn:active {
+      transform: scale(0.98);
+    }
+    .opt-btn.positive:hover {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+    }
+    .opt-btn.negative {
+      border-color: rgba(244, 63, 94, 0.3);
+      color: #fda4af;
+    }
+    .opt-btn.negative:hover {
+      border-color: #f43f5e;
+      background: rgba(244, 63, 94, 0.1);
+    }
+    .emoji {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .status-box {
+      margin-top: 15px;
+      padding: 18px;
+      border-radius: 14px;
+      background: #0f172a;
+      border: 1px solid #334155;
+    }
+    .status-box h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+      color: #4ade80;
+    }
+    .status-box.neg-box h3 {
+      color: #fb7185;
+    }
+    .status-box p {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    textarea, input.admin-input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #fff;
+      padding: 11px 12px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    textarea {
+      height: 80px;
+      resize: none;
+      background: #1e293b;
+    }
+    .action-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #22c55e;
+      color: #052e16;
+      margin-top: 4px;
+    }
+    .action-btn.wa-btn {
+      background: #f43f5e;
+      color: #fff;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #64748b;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .admin-label {
+      display: block;
+      text-align: left;
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CUSTOMER FEEDBACK CARD -->
+  <div class="card" id="customerCard">
+    <span class="badge">⚡ 1-Tap Instant Feedback</span>
+    <h1 id="shopTitle">Royal Cafe & Bistro</h1>
+    <p class="subtitle" id="subText">Aapka aaj ka experience kaisa raha? (Koi 1 chunein)</p>
+
+    <div id="optionsContainer" class="options-list">
+      <!-- 4 POSITIVE OPTIONS -->
+      <button class="opt-btn positive" onclick="handlePositive(0)">
+        <span class="emoji">😍</span>
+        <span>Best Service & Friendly Staff</span>
+      </button>
+
+      <button class="opt-btn positive" onclick="handlePositive(1)">
+        <span class="emoji">⭐</span>
+        <span>Top Quality & Full Paisa Vasool</span>
+      </button>
+
+      <button class="opt-btn positive" onclick="handlePositive(2)">
+        <span class="emoji">✨</span>
+        <span>Great Vibe, Ambience & Cleanliness</span>
+      </button>
+
+      <button class="opt-btn positive" onclick="handlePositive(3)">
+        <span class="emoji">🚀</span>
+        <span>Fast Service & Overall 5-Star Experience</span>
+      </button>
+
+      <!-- 2 NEGATIVE OPTIONS -->
+      <button class="opt-btn negative" onclick="handleNegative('Service thodi slow thi / Waiting time zyada tha')">
+        <span class="emoji">⏳</span>
+        <span>Service Slow Thi / Waiting Issue</span>
+      </button>
+
+      <button class="opt-btn negative" onclick="handleNegative('Quality ya Staff behaviour mein sudhaar chahiye')">
+        <span class="emoji">⚠️</span>
+        <span>Quality ya Staff Behaviour Issue</span>
+      </button>
+    </div>
+
+    <!-- Positive Auto-Copy Box -->
+    <div id="positiveBox" class="status-box hidden">
+      <h3>✅ Review Text Copy Ho Gaya!</h3>
+      <p>Ab Google page khul raha hai. Wahan <b>5 Star</b> select karke box mein bas <b>Paste</b> kar dein.</p>
+      <button class="action-btn" onclick="openGoogleNow()">Google Review Kholein ➔</button>
+    </div>
+
+    <!-- Negative Private Shield Box -->
+    <div id="negativeBox" class="status-box neg-box hidden">
+      <h3>🙏 Humein Maaf Karein!</h3>
+      <p>Aapki complaint seedha <b>Shop Owner</b> ke personal WhatsApp par jayegi taaki hum isse turant theek kar sakein:</p>
+      <textarea id="negCustomNote" placeholder="Agar kuch aur batana chahein toh yahan likhein (Optional)..."></textarea>
+      <button class="action-btn wa-btn" onclick="sendToOwnerWhatsApp()">Send Directly to Owner (WhatsApp)</button>
+      <span class="back-link" onclick="resetView()">← Wapas Peeche Jayein</span>
+    </div>
+  </div>
+
+  <!-- SECRET ADMIN LINK GENERATOR CARD (?admin=1) -->
+  <div class="card hidden" id="adminCard">
+    <span class="badge">🛠️ Chaitanya's Admin Panel</span>
+    <h1>New Shop Link Maker</h1>
+    <p class="subtitle">Naye dukaandaar ki details bharein aur NFC/QR link copy karein</p>
+
+    <label class="admin-label">1. Shop Name</label>
+    <input type="text" id="admShop" class="admin-input" placeholder="e.g. GYM11 Fitness, Citylight" />
+
+    <label class="admin-label">2. Owner WhatsApp (91 ke saath)</label>
+    <input type="text" id="admWa" class="admin-input" placeholder="e.g. 919876543210" />
+
+    <label class="admin-label">3. Shop Google Review Link</label>
+    <input type="text" id="admGoogle" class="admin-input" placeholder="Paste Google Review link here" />
+
+    <button class="action-btn" onclick="generateShopLink()">Generate & Copy Shop Link 🔗</button>
+
+    <div id="genResultBox" class="status-box hidden">
+      <h3>✅ Link Copy Ho Gaya!</h3>
+      <p id="genUrlPreview" style="word-break: break-all; font-size: 11px;"></p>
+      <button class="action-btn" onclick="testGeneratedLink()">Iss Link Ko Open Karke Test Karein ➔</button>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    // URL se Shop ka data lena (Agar URL mein nahi hai toh default Demo chalega)
+    const SHOP_CONFIG = {
+      shopName: params.get("shop") || "Royal Cafe & Bistro, Surat",
+      ownerWhatsapp: params.get("wa") || "919876543210",
+      googleReviewUrl: params.get("g") || "https://www.google.com/maps"
+    };
+
+    // Agar link ke aakhir mein ?admin=1 hai toh Admin Panel dikhao
+    if (params.get("admin") === "1") {
+      document.getElementById("customerCard").classList.add("hidden");
+      document.getElementById("adminCard").classList.remove("hidden");
+    }
+
+    document.getElementById("shopTitle").innerText = SHOP_CONFIG.shopName;
+
+    const POSITIVE_REVIEWS = [
+      `Amazing service and very polite staff at ${SHOP_CONFIG.shopName}! Had a wonderful experience. Highly recommended!`,
+      `Top-notch quality at ${SHOP_CONFIG.shopName} and totally worth the price! Definitely visiting again soon.`,
+      `Loved the ambience, hygiene, and overall vibe of ${SHOP_CONFIG.shopName}. Best experience in Surat!`,
+      `Super fast service and a complete 5-star experience at ${SHOP_CONFIG.shopName} from start to finish!`
+    ];
+
+    let selectedNegativeIssue = "";
+    let finalGeneratedUrl = "";
+
+    function copyTextToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+      }
+    }
+
+    function handlePositive(index) {
+      copyTextToClipboard(POSITIVE_REVIEWS[index]);
+      document.getElementById("optionsContainer").classList.add("hidden");
+      document.getElementById("subText").classList.add("hidden");
+      document.getElementById("positiveBox").classList.remove("hidden");
+
+      setTimeout(() => {
+        openGoogleNow();
+      }, 1500);
+    }
+
+    function openGoogleNow() {
+      window.location.href = SHOP_CONFIG.googleReviewUrl;
+    }
+
+    function handleNegative(issueText) {
+      selectedNegativeIssue = issueText;
+      document.getElementById("optionsContainer").classList.add("hidden");
+      document.getElementById("subText").classList.add("hidden");
+      document.getElementById("negativeBox").classList.remove("hidden");
+    }
+
+    function sendToOwnerWhatsApp() {
+      const extraNote = document.getElementById("negCustomNote").value.trim();
+      let message = `*Private Customer Alert (${SHOP_CONFIG.shopName})*\n\n*Issue:* ${selectedNegativeIssue}`;
+      if (extraNote) {
+        message += `\n*Customer Note:* ${extraNote}`;
+      }
+      window.location.href = `https://wa.me/${SHOP_CONFIG.ownerWhatsapp}?text=${encodeURIComponent(message)}`;
+    }
+
+    function resetView() {
+      document.getElementById("negativeBox").classList.add("hidden");
+      document.getElementById("optionsContainer").classList.remove("hidden");
+      document.getElementById("subText").classList.remove("hidden");
+    }
+
+    // Admin Generator Function
+    function generateShopLink() {
+      const s = document.getElementById("admShop").value.trim() || "My Shop";
+      const w = document.getElementById("admWa").value.trim() || "919876543210";
+      const g = document.getElementById("admGoogle").value.trim() || "https://www.google.com/maps";
+
+      const baseUrl = window.location.origin + window.location.pathname;
+      finalGeneratedUrl = `${baseUrl}?shop=${encodeURIComponent(s)}&wa=${encodeURIComponent(w)}&g=${encodeURIComponent(g)}`;
+
+      copyTextToClipboard(finalGeneratedUrl);
+      document.getElementById("genUrlPreview").innerText = finalGeneratedUrl;
+      document.getElementById("genResultBox").classList.remove("hidden");
+    }
+
+    function testGeneratedLink() {
+      if (finalGeneratedUrl) window.location.href = finalGeneratedUrl;
+    }
+  </script>
+</body>
+</html>
