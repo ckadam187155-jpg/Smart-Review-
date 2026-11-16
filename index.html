@@ -2,190 +2,191 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Smart Feedback & Review System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Feedback & Review</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
     }
+
     body {
-      background: #f8fafc;
-      color: #0f172a;
+      background-color: #f4f6f9;
+      color: #1e293b;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       padding: 16px;
     }
-    .card {
+
+    .dashboard-card {
       background: #ffffff;
       width: 100%;
       max-width: 460px;
       border-radius: 24px;
-      padding: 30px 24px;
-      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.06), 0 3px 10px rgba(15, 23, 42, 0.04);
-      border: 1px solid #e2e8f0;
+      padding: 32px 24px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
       text-align: center;
-      animation: cardEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
+      border: 1px solid #e2e8f0;
+      animation: cardFadeIn 0.4s ease-out;
     }
-    @keyframes cardEnter {
-      from { opacity: 0; transform: translateY(12px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .badge {
-      display: inline-block;
-      background: #f0fdf4;
-      color: #16a34a;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 6px 14px;
-      border-radius: 999px;
-      margin-bottom: 14px;
-      letter-spacing: 0.5px;
-      border: 1px solid #dcfce7;
-      text-transform: uppercase;
-    }
-    .star-showcase {
+
+    .stars-container {
       display: flex;
       justify-content: center;
-      gap: 6px;
-      margin: 4px 0 16px 0;
+      gap: 10px;
+      margin-bottom: 18px;
     }
-    .star-icon {
-      font-size: 28px;
-      color: #f59e0b;
-      filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.25));
+
+    .star {
+      font-size: 38px;
+      cursor: pointer;
+      display: inline-block;
       animation: starPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+      transition: transform 0.2s ease;
+      user-select: none;
     }
-    .star-icon:nth-child(1) { animation-delay: 0.05s; }
-    .star-icon:nth-child(2) { animation-delay: 0.10s; }
-    .star-icon:nth-child(3) { animation-delay: 0.15s; }
-    .star-icon:nth-child(4) { animation-delay: 0.20s; }
-    .star-icon:nth-child(5) { animation-delay: 0.25s; }
+
+    .star:nth-child(1) { animation-delay: 0.08s; }
+    .star:nth-child(2) { animation-delay: 0.16s; }
+    .star:nth-child(3) { animation-delay: 0.24s; }
+    .star:nth-child(4) { animation-delay: 0.32s; }
+    .star:nth-child(5) { animation-delay: 0.40s; }
+
+    .star:hover, .star:active {
+      transform: scale(1.22);
+    }
 
     @keyframes starPop {
       0% { transform: scale(0); opacity: 0; }
-      70% { transform: scale(1.2); }
+      80% { transform: scale(1.18); opacity: 1; }
       100% { transform: scale(1); opacity: 1; }
     }
 
-    h1 {
-      font-size: 24px;
+    .shop-title {
+      font-size: 26px;
       font-weight: 800;
-      margin-bottom: 6px;
       color: #0f172a;
-      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+      line-height: 1.25;
+      word-wrap: break-word;
     }
-    p.subtitle {
-      font-size: 15px;
+
+    .subtitle {
+      font-size: 16px;
       color: #64748b;
-      margin-bottom: 22px;
-      font-weight: 400;
+      margin-bottom: 26px;
       line-height: 1.4;
     }
-    .options-list {
+
+    .options-grid {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-    .opt-btn {
+
+    .option-btn {
       width: 100%;
-      text-align: left;
       padding: 16px 18px;
-      border-radius: 14px;
-      border: 1.5px solid #e2e8f0;
-      background: #ffffff;
-      color: #1e293b;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
+      border-radius: 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 14px;
-      transition: all 0.15s ease;
+      justify-content: space-between;
+      text-align: left;
+      transition: all 0.2s ease;
+      border: 1.5px solid #e2e8f0;
+      background: #ffffff;
+      color: #1e293b;
     }
-    .opt-btn:active {
+
+    .option-btn:active {
       transform: scale(0.98);
     }
-    .opt-btn.positive:hover {
+
+    .option-positive:hover {
       border-color: #22c55e;
-      background: #f8fafc;
-      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.08);
+      background-color: #f0fdf4;
     }
-    .opt-btn.negative {
-      background: #fff5f5;
-      border-color: #fed7d7;
-      color: #c53030;
+
+    .option-negative:hover {
+      border-color: #f97316;
+      background-color: #fff7ed;
     }
-    .opt-btn.negative:hover {
-      border-color: #f56565;
-      background: #fff0f0;
-      box-shadow: 0 4px 12px rgba(245, 101, 101, 0.08);
-    }
-    .emoji {
-      font-size: 22px;
-      flex-shrink: 0;
-    }
-    .hidden {
-      display: none !important;
-    }
-    .status-box {
-      margin-top: 10px;
-      padding: 22px 18px;
-      border-radius: 16px;
-      background: #f0fdf4;
-      border: 1.5px solid #bbf7d0;
-      animation: cardEnter 0.25s ease-out;
-    }
-    .status-box.neg-box {
-      background: #fff5f5;
-      border-color: #fed7d7;
-    }
-    .big-pop-stars {
-      font-size: 32px;
-      margin-bottom: 8px;
-      letter-spacing: 3px;
-    }
-    .status-box h3 {
-      font-size: 19px;
-      margin-bottom: 8px;
-      color: #166534;
+
+    .arrow {
+      font-size: 18px;
+      color: #94a3b8;
       font-weight: 700;
     }
-    .status-box.neg-box h3 {
-      color: #9b2c2c;
+
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 999;
     }
-    .status-box p {
-      font-size: 15px;
-      color: #475569;
-      line-height: 1.5;
-      margin-bottom: 16px;
-    }
-    textarea, input.admin-input {
-      width: 100%;
-      border-radius: 12px;
-      border: 1.5px solid #cbd5e1;
+
+    .popup-box {
       background: #ffffff;
-      color: #0f172a;
-      padding: 13px 15px;
-      font-size: 15px;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 22px;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      animation: starPop 0.35s ease-out;
+    }
+
+    .popup-stars {
+      font-size: 36px;
       margin-bottom: 12px;
-      outline: none;
-      transition: border-color 0.15s;
+      letter-spacing: 4px;
     }
-    textarea:focus, input.admin-input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+
+    .popup-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
     }
-    textarea {
+
+    .popup-text {
+      font-size: 15px;
+      color: #64748b;
+      margin-bottom: 18px;
+    }
+
+    .feedback-input {
+      width: 100%;
       height: 90px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 15px;
+      margin-bottom: 14px;
       resize: none;
+      outline: none;
     }
+
+    .feedback-input:focus {
+      border-color: #3b82f6;
+    }
+
     .action-btn {
       width: 100%;
       padding: 15px;
@@ -194,301 +195,154 @@
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      background: #16a34a;
+      background: #2563eb;
       color: #ffffff;
-      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.25);
-      transition: opacity 0.15s;
     }
-    .action-btn:active { opacity: 0.9; }
-    .action-btn.wa-btn {
-      background: #e11d48;
-      box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25);
-    }
-    .back-link {
-      display: inline-block;
-      margin-top: 14px;
-      font-size: 13px;
-      font-weight: 600;
+
+    .close-btn {
+      margin-top: 10px;
+      background: transparent;
+      border: none;
       color: #64748b;
+      font-size: 14px;
       cursor: pointer;
       text-decoration: underline;
     }
-    .admin-label {
-      display: block;
-      text-align: left;
-      font-size: 13px;
-      color: #475569;
-      margin-bottom: 5px;
-      font-weight: 700;
-    }
-    .qr-preview {
-      background: #ffffff;
-      padding: 10px;
-      border-radius: 12px;
-      display: inline-block;
-      margin: 10px 0;
-      border: 1.5px solid #e2e8f0;
-    }
-    .qr-preview img {
-      width: 160px;
-      height: 160px;
-      display: block;
-    }
-    /* Agency Footer */
-    .agency-footer {
-      margin-top: 20px;
-      font-size: 11px;
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 12px;
       color: #94a3b8;
       font-weight: 500;
-      letter-spacing: 0.3px;
-      border-top: 1px solid #f1f5f9;
-      padding-top: 12px;
-    }
-    /* Toast Notification */
-    #toast {
-      visibility: hidden;
-      min-width: 220px;
-      background-color: #0f172a;
-      color: #fff;
-      text-align: center;
-      border-radius: 99px;
-      padding: 12px 20px;
-      position: fixed;
-      z-index: 99;
-      left: 50%;
-      bottom: 30px;
-      transform: translateX(-50%);
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    }
-    #toast.show {
-      visibility: visible;
-      animation: fadein 0.3s, fadeout 0.3s 2.2s;
-    }
-    @keyframes fadein {
-      from { bottom: 0; opacity: 0; }
-      to { bottom: 30px; opacity: 1; }
-    }
-    @keyframes fadeout {
-      from { bottom: 30px; opacity: 1; }
-      to { bottom: 0; opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- CUSTOMER FEEDBACK CARD -->
-  <div class="card" id="customerCard">
-    <span class="badge">Verified 5-Star Experience</span>
-
-    <div class="star-showcase">
-      <span class="star-icon">★</span>
-      <span class="star-icon">★</span>
-      <span class="star-icon">★</span>
-      <span class="star-icon">★</span>
-      <span class="star-icon">★</span>
+  <div class="dashboard-card">
+    <div class="stars-container">
+      <span class="star" onclick="handlePositive('5-Star Rating')">⭐</span>
+      <span class="star" onclick="handlePositive('5-Star Rating')">⭐</span>
+      <span class="star" onclick="handlePositive('5-Star Rating')">⭐</span>
+      <span class="star" onclick="handlePositive('5-Star Rating')">⭐</span>
+      <span class="star" onclick="handlePositive('5-Star Rating')">⭐</span>
     </div>
 
-    <h1 id="shopTitle">Business Name</h1>
-    <p class="subtitle" id="subText">How was your experience with us today? Select one option below:</p>
+    <h1 class="shop-title" id="shopNameDisplay">Welcome!</h1>
+    <p class="subtitle">Tap an option below to share your quick experience with us</p>
 
-    <div id="optionsContainer" class="options-list">
-      <button class="opt-btn positive" onclick="handlePositive(0)">
-        <span class="emoji">😍</span>
-        <span>Excellent Service & Friendly Staff</span>
+    <div class="options-grid">
+      <!-- 4 Positive Options (Direct to Google Review) -->
+      <button class="option-btn option-positive" onclick="handlePositive('Excellent Service & Staff')">
+        <span>🌟 Excellent Service & Staff</span>
+        <span class="arrow">→</span>
       </button>
 
-      <button class="opt-btn positive" onclick="handlePositive(1)">
-        <span class="emoji">🌟</span>
-        <span>Top-Notch Quality & Value for Money</span>
+      <button class="option-btn option-positive" onclick="handlePositive('Amazing Quality & Taste')">
+        <span>✨ Amazing Quality & Experience</span>
+        <span class="arrow">→</span>
       </button>
 
-      <button class="opt-btn positive" onclick="handlePositive(2)">
-        <span class="emoji">✨</span>
-        <span>Wonderful Ambience & Cleanliness</span>
+      <button class="option-btn option-positive" onclick="handlePositive('Great Ambience & Vibe')">
+        <span>💎 Great Ambience & Cleanliness</span>
+        <span class="arrow">→</span>
       </button>
 
-      <button class="opt-btn positive" onclick="handlePositive(3)">
-        <span class="emoji">🚀</span>
-        <span>Lightning Fast Service & Great Vibe</span>
+      <button class="option-btn option-positive" onclick="handlePositive('100% Value for Money')">
+        <span>🙌 100% Value for Money</span>
+        <span class="arrow">→</span>
       </button>
 
-      <button class="opt-btn negative" onclick="handleNegative('Slow Service / Waiting Time Issue')">
-        <span class="emoji">⏳</span>
-        <span>Slow Service / Waiting Time Issue</span>
+      <!-- 2 Negative Options (Direct to Owner's WhatsApp) -->
+      <button class="option-btn option-negative" onclick="openNegativeModal('Slow Service / Wait Time')">
+        <span>⏳ Slow Service / Wait Time</span>
+        <span class="arrow">→</span>
       </button>
 
-      <button class="opt-btn negative" onclick="handleNegative('Quality or Staff Behaviour Needs Attention')">
-        <span class="emoji">⚠️</span>
-        <span>Quality or Service Needs Improvement</span>
+      <button class="option-btn option-negative" onclick="openNegativeModal('Need Improvement in Quality')">
+        <span>⚠️ Something Could Be Better</span>
+        <span class="arrow">→</span>
       </button>
     </div>
 
-    <div id="positiveBox" class="status-box hidden">
-      <div class="big-pop-stars">⭐⭐⭐⭐⭐</div>
-      <h3>Review Copied Instantly!</h3>
-      <p>Redirecting to Google Reviews... Tap <b>5 Stars</b> and simply <b>Paste</b> your review.</p>
-      <button class="action-btn" onclick="openGoogleNow()">Open Google Reviews ➔</button>
-    </div>
+    <p class="footer-note">Powered by Smart Review System</p>
+  </div>
 
-    <div id="negativeBox" class="status-box neg-box hidden">
-      <h3>We Value Your Feedback</h3>
-      <p>Your message will be sent directly to the <b>Management WhatsApp</b> so we can resolve this immediately:</p>
-      <textarea id="negCustomNote" placeholder="Add optional details about your experience..."></textarea>
-      <button class="action-btn wa-btn" onclick="sendToOwnerWhatsApp()">Send Directly to Management</button>
-      <span class="back-link" onclick="resetView()">← Go Back</span>
-    </div>
-
-    <div class="agency-footer">
-      Powered by Apex Growth Engine ⚡ Verified Feedback System
+  <!-- Positive Star Pop-up Modal -->
+  <div class="popup-overlay" id="positiveModal">
+    <div class="popup-box">
+      <div class="popup-stars">⭐⭐⭐⭐⭐</div>
+      <h2 class="popup-title">Thank You! 🎉</h2>
+      <p class="popup-text">Redirecting you to Google Maps to post your 5-star review...</p>
+      <button class="action-btn" id="continueGoogleBtn">Post on Google Now</button>
     </div>
   </div>
 
-  <!-- SECRET ADMIN LINK GENERATOR CARD (?admin=1) -->
-  <div class="card hidden" id="adminCard">
-    <span class="badge">🛠️ Merchant Control Center</span>
-    <h1>Generate QR & Link</h1>
-    <p class="subtitle">Enter business credentials to initialize instant review funnel</p>
-
-    <label class="admin-label">Business Name</label>
-    <input type="text" id="admShop" class="admin-input" placeholder="e.g. Apex Fitness Studio, Surat" />
-
-    <label class="admin-label">Owner WhatsApp Number (with country code)</label>
-    <input type="text" id="admWa" class="admin-input" placeholder="e.g. 919876543210" />
-
-    <label class="admin-label">Google Maps Review Link</label>
-    <input type="text" id="admGoogle" class="admin-input" placeholder="Paste Google review link here" />
-
-    <button class="action-btn" onclick="generateShopLink()" id="genBtn">Generate Secure Link & QR 🚀</button>
-
-    <div id="genResultBox" class="status-box hidden" style="margin-top: 14px;">
-      <h3 style="color: #166534; font-size: 16px;">System Ready for Standee</h3>
-      <div class="qr-preview">
-        <img id="qrImage" src="" alt="QR Code" />
-      </div>
-      <p id="genUrlPreview" style="word-break: break-all; font-size: 11px; margin-top: 6px; color: #475569; font-weight: 600;"></p>
-      <button class="action-btn" onclick="testGeneratedLink()" style="margin-top: 8px; padding: 12px; font-size: 14px;">Test Client Page ➔</button>
-    </div>
-
-    <div class="agency-footer">
-      Admin Management Panel • Secure Gateway
+  <!-- Negative Feedback Pop-up Modal (WhatsApp) -->
+  <div class="popup-overlay" id="negativeModal">
+    <div class="popup-box">
+      <h2 class="popup-title">We Value Your Feedback 🙏</h2>
+      <p class="popup-text">Tell the owner directly on WhatsApp so we can fix this immediately:</p>
+      <textarea class="feedback-input" id="customFeedback" placeholder="Write your feedback here..."></textarea>
+      <button class="action-btn" onclick="sendWhatsAppFeedback()">Send Directly to Owner</button>
+      <button class="close-btn" onclick="closeModals()">Cancel</button>
     </div>
   </div>
-
-  <!-- Floating Toast Notification -->
-  <div id="toast">Link copied to clipboard!</div>
 
   <script>
+    // 1. Read URL Parameters (Supports both new 's, w, m' and old 'shop, wa, g')
     const params = new URLSearchParams(window.location.search);
 
-    const SHOP_CONFIG = {
-      shopName: params.get("shop") || "Apex Fitness & Cafe",
-      ownerWhatsapp: params.get("wa") || "919876543210",
-      googleReviewUrl: params.get("g") || "https://www.google.com/maps"
-    };
+    const shopName = params.get('s') || params.get('shop') || 'Our Store';
+    const rawWa = params.get('w') || params.get('wa') || '';
+    const whatsappNumber = rawWa.replace(/[^0-9]/g, '');
 
-    if (params.get("admin") === "1") {
-      document.getElementById("customerCard").classList.add("hidden");
-      document.getElementById("adminCard").classList.remove("hidden");
+    const rawMap = params.get('m') || params.get('g') || '';
+    const googleMapsUrl = rawMap
+      ? (rawMap.startsWith('http') ? rawMap : `https://maps.app.goo.gl/${rawMap}`)
+      : 'https://www.google.com/maps';
+
+    // Set Shop Name on UI
+    document.getElementById('shopNameDisplay').textContent = shopName;
+    document.title = `${shopName} - Review`;
+
+    let selectedIssue = '';
+
+    // 2. Positive Flow -> Show Star Pop-up & Redirect to Google Maps
+    function handlePositive(reason) {
+      const modal = document.getElementById('positiveModal');
+      modal.style.display = 'flex';
+
+      document.getElementById('continueGoogleBtn').onclick = function () {
+        window.location.href = googleMapsUrl;
+      };
+
+      setTimeout(() => {
+        window.location.href = googleMapsUrl;
+      }, 900);
     }
 
-    document.getElementById("shopTitle").innerText = SHOP_CONFIG.shopName;
-
-    const POSITIVE_REVIEWS = [
-      `Outstanding service and extremely polite staff at ${SHOP_CONFIG.shopName}! Had a wonderful experience. Highly recommended!`,
-      `Top-notch quality at ${SHOP_CONFIG.shopName} and absolute value for money! Will definitely visit again soon.`,
-      `Loved the ambience, hygiene, and overall premium vibe at ${SHOP_CONFIG.shopName}. Truly one of the best spots in Surat!`,
-      `Lightning fast service and a complete 5-star experience at ${SHOP_CONFIG.shopName} from start to finish!`
-    ];
-
-    let selectedNegativeIssue = "";
-    let finalGeneratedUrl = "";
-
-    function showToast(msg) {
-      const t = document.getElementById("toast");
-      t.innerText = msg;
-      t.className = "show";
-      setTimeout(() => { t.className = t.className.replace("show", ""); }, 2500);
+    // 3. Negative Flow -> Open Private Feedback Box for Owner's WhatsApp
+    function openNegativeModal(issue) {
+      selectedIssue = issue;
+      document.getElementById('negativeModal').style.display = 'flex';
     }
 
-    function copyTextToClipboard(text) {
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text);
+    function sendWhatsAppFeedback() {
+      const extraNote = document.getElementById('customFeedback').value.trim();
+      const message = `Hello *${shopName}*, I visited recently and wanted to share private feedback:\n\n*Issue:* ${selectedIssue}${extraNote ? `\n*Details:* ${extraNote}` : ''}`;
+
+      if (whatsappNumber) {
+        window.location.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
       } else {
-        const tempInput = document.createElement("textarea");
-        tempInput.value = text;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
+        alert('Thank you! Your feedback has been noted.');
+        closeModals();
       }
-      showToast("Review text auto-copied!");
     }
 
-    function handlePositive(index) {
-      copyTextToClipboard(POSITIVE_REVIEWS[index]);
-      document.getElementById("optionsContainer").classList.add("hidden");
-      document.getElementById("subText").classList.add("hidden");
-      document.getElementById("positiveBox").classList.remove("hidden");
-
-      setTimeout(() => {
-        openGoogleNow();
-      }, 1400);
-    }
-
-    function openGoogleNow() {
-      window.location.href = SHOP_CONFIG.googleReviewUrl;
-    }
-
-    function handleNegative(issueText) {
-      selectedNegativeIssue = issueText;
-      document.getElementById("optionsContainer").classList.add("hidden");
-      document.getElementById("subText").classList.add("hidden");
-      document.getElementById("negativeBox").classList.remove("hidden");
-    }
-
-    function sendToOwnerWhatsApp() {
-      const extraNote = document.getElementById("negCustomNote").value.trim();
-      let message = `*Private Customer Feedback (${SHOP_CONFIG.shopName})*\n\n*Issue:* ${selectedNegativeIssue}`;
-      if (extraNote) {
-        message += `\n*Details:* ${extraNote}`;
-      }
-      window.location.href = `https://wa.me/${SHOP_CONFIG.ownerWhatsapp}?text=${encodeURIComponent(message)}`;
-    }
-
-    function resetView() {
-      document.getElementById("negativeBox").classList.add("hidden");
-      document.getElementById("optionsContainer").classList.remove("hidden");
-      document.getElementById("subText").classList.remove("hidden");
-    }
-
-    function generateShopLink() {
-      const s = document.getElementById("admShop").value.trim() || "Apex Fitness";
-      const w = document.getElementById("admWa").value.trim() || "919876543210";
-      const g = document.getElementById("admGoogle").value.trim() || "https://www.google.com/maps";
-
-      const btn = document.getElementById("genBtn");
-      btn.innerText = "Generating QR & Encrypting Link...";
-      
-      setTimeout(() => {
-        const baseUrl = window.location.origin + window.location.pathname;
-        finalGeneratedUrl = `${baseUrl}?shop=${encodeURIComponent(s)}&wa=${encodeURIComponent(w)}&g=${encodeURIComponent(g)}`;
-
-        copyTextToClipboard(finalGeneratedUrl);
-
-        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(finalGeneratedUrl)}`;
-        document.getElementById("qrImage").src = qrApiUrl;
-        
-        document.getElementById("genUrlPreview").innerText = finalGeneratedUrl;
-        document.getElementById("genResultBox").classList.remove("hidden");
-        btn.innerText = "Generate Secure Link & QR 🚀";
-        showToast("QR Code & Link Generated!");
-      }, 400);
-    }
-
-    function testGeneratedLink() {
-      if (finalGeneratedUrl) window.location.href = finalGeneratedUrl;
+    function closeModals() {
+      document.getElementById('positiveModal').style.display = 'none';
+      document.getElementById('negativeModal').style.display = 'none';
     }
   </script>
 </body>
