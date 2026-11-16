@@ -31,12 +31,6 @@
       box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
       text-align: center;
       border: 1px solid #e2e8f0;
-      animation: cardFadeIn 0.4s ease-out;
-    }
-
-    @keyframes cardFadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .stars-container {
@@ -50,26 +44,13 @@
       font-size: 38px;
       cursor: pointer;
       display: inline-block;
-      animation: starPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
-      transition: transform 0.2s ease;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      transition: transform 0.15s ease;
     }
 
-    .star:nth-child(1) { animation-delay: 0.08s; }
-    .star:nth-child(2) { animation-delay: 0.16s; }
-    .star:nth-child(3) { animation-delay: 0.24s; }
-    .star:nth-child(4) { animation-delay: 0.32s; }
-    .star:nth-child(5) { animation-delay: 0.40s; }
-
-    .star:hover, .star:active {
-      transform: scale(1.22);
-    }
-
-    @keyframes starPop {
-      0% { transform: scale(0); opacity: 0; }
-      80% { transform: scale(1.18); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
+    .star:active {
+      transform: scale(1.25);
     }
 
     .shop-title {
@@ -105,7 +86,6 @@
       align-items: center;
       justify-content: space-between;
       text-align: left;
-      transition: all 0.2s ease;
       border: 1.5px solid #e2e8f0;
       background: #ffffff;
       color: #1e293b;
@@ -114,16 +94,7 @@
 
     .option-btn:active {
       transform: scale(0.98);
-    }
-
-    .option-positive:hover {
-      border-color: #22c55e;
       background-color: #f0fdf4;
-    }
-
-    .option-negative:hover {
-      border-color: #f97316;
-      background-color: #fff7ed;
     }
 
     .arrow {
@@ -135,7 +106,7 @@
     .popup-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.55);
+      background: rgba(15, 23, 42, 0.6);
       display: none;
       justify-content: center;
       align-items: center;
@@ -146,17 +117,18 @@
     .popup-box {
       background: #ffffff;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       border-radius: 22px;
-      padding: 28px 22px;
+      padding: 26px 20px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-      animation: starPop 0.35s ease-out;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      max-height: 92vh;
+      overflow-y: auto;
     }
 
     .popup-stars {
-      font-size: 34px;
-      margin-bottom: 10px;
+      font-size: 32px;
+      margin-bottom: 8px;
       letter-spacing: 4px;
     }
 
@@ -164,52 +136,39 @@
       display: inline-block;
       background: #dcfce7;
       color: #15803d;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       padding: 6px 14px;
       border-radius: 999px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .popup-title {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 700;
       color: #0f172a;
       margin-bottom: 8px;
     }
 
-    .copied-preview {
+    .copy-box {
+      width: 100%;
+      height: 85px;
       background: #f8fafc;
-      border: 1px dashed #cbd5e1;
+      border: 1.5px solid #22c55e;
       border-radius: 12px;
-      padding: 12px;
+      padding: 10px 12px;
       font-size: 14px;
-      color: #334155;
-      margin-bottom: 14px;
-      font-style: italic;
+      color: #0f172a;
+      margin-bottom: 12px;
+      resize: none;
+      outline: none;
       line-height: 1.4;
     }
 
     .popup-text {
       font-size: 14px;
       color: #64748b;
-      margin-bottom: 18px;
-    }
-
-    .feedback-input {
-      width: 100%;
-      height: 95px;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 15px;
-      margin-bottom: 14px;
-      resize: none;
-      outline: none;
-    }
-
-    .feedback-input:focus {
-      border-color: #3b82f6;
+      margin-bottom: 16px;
     }
 
     .action-btn {
@@ -222,10 +181,24 @@
       cursor: pointer;
       background: #2563eb;
       color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .secondary-btn {
+      width: 100%;
+      padding: 13px;
+      border: 1.5px solid #2563eb;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #eff6ff;
+      color: #1d4ed8;
+      margin-bottom: 8px;
     }
 
     .close-btn {
-      margin-top: 10px;
+      margin-top: 6px;
       background: transparent;
       border: none;
       color: #64748b;
@@ -239,6 +212,64 @@
       font-size: 12px;
       color: #94a3b8;
       font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      padding: 6px;
+    }
+
+    /* Admin Generator Form Styles */
+    .form-group {
+      text-align: left;
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 15px;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: #2563eb;
+    }
+
+    .byte-counter {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    .byte-ok {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .byte-warn {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .admin-result-section {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed #cbd5e1;
     }
   </style>
 </head>
@@ -246,198 +277,284 @@
 
   <div class="dashboard-card">
     <div class="stars-container">
-      <span class="star" onclick="handleOptionClick('stars', true)">⭐</span>
-      <span class="star" onclick="handleOptionClick('stars', true)">⭐</span>
-      <span class="star" onclick="handleOptionClick('stars', true)">⭐</span>
-      <span class="star" onclick="handleOptionClick('stars', true)">⭐</span>
-      <span class="star" onclick="handleOptionClick('stars', true)">⭐</span>
+      <span class="star" onclick="triggerOption('stars', true)">⭐</span>
+      <span class="star" onclick="triggerOption('stars', true)">⭐</span>
+      <span class="star" onclick="triggerOption('stars', true)">⭐</span>
+      <span class="star" onclick="triggerOption('stars', true)">⭐</span>
+      <span class="star" onclick="triggerOption('stars', true)">⭐</span>
     </div>
 
-    <h1 class="shop-title" id="shopNameDisplay">Welcome!</h1>
-    <p class="subtitle">Tap any option below — it will auto-copy your feedback instantly!</p>
+    <h1 class="shop-title" id="shopNameDisplay">Vellora Cafe and Restro</h1>
+    <p class="subtitle">Tap any option below — it will auto-copy your review instantly!</p>
 
     <div class="options-grid">
-      <!-- Option 1 (Positive) -->
-      <button class="option-btn option-positive" onclick="handleOptionClick('service', true)">
+      <button type="button" class="option-btn" onclick="triggerOption('service', true)">
         <span>🌟 Excellent Service & Staff</span>
         <span class="arrow">→</span>
       </button>
 
-      <!-- Option 2 (Positive) -->
-      <button class="option-btn option-positive" onclick="handleOptionClick('quality', true)">
+      <button type="button" class="option-btn" onclick="triggerOption('quality', true)">
         <span>✨ Amazing Quality & Experience</span>
         <span class="arrow">→</span>
       </button>
 
-      <!-- Option 3 (Positive) -->
-      <button class="option-btn option-positive" onclick="handleOptionClick('ambience', true)">
+      <button type="button" class="option-btn" onclick="triggerOption('ambience', true)">
         <span>💎 Great Ambience & Cleanliness</span>
         <span class="arrow">→</span>
       </button>
 
-      <!-- Option 4 (Positive) -->
-      <button class="option-btn option-positive" onclick="handleOptionClick('value', true)">
+      <button type="button" class="option-btn" onclick="triggerOption('value', true)">
         <span>🙌 100% Value for Money</span>
         <span class="arrow">→</span>
       </button>
 
-      <!-- Option 5 (Negative - Also Auto-Copies + Opens WhatsApp Modal) -->
-      <button class="option-btn option-negative" onclick="handleOptionClick('slow', false)">
+      <button type="button" class="option-btn" onclick="triggerOption('slow', false)">
         <span>⏳ Slow Service / Wait Time</span>
         <span class="arrow">→</span>
       </button>
 
-      <!-- Option 6 (Negative - Also Auto-Copies + Opens WhatsApp Modal) -->
-      <button class="option-btn option-negative" onclick="handleOptionClick('improve', false)">
+      <button type="button" class="option-btn" onclick="triggerOption('improve', false)">
         <span>⚠️ Something Could Be Better</span>
         <span class="arrow">→</span>
       </button>
     </div>
 
-    <p class="footer-note">Powered by Smart Review System</p>
+    <!-- Secret Trigger: Tap 3 times here to open Admin Mode -->
+    <p class="footer-note" id="secretAdminTrigger" onclick="handleSecretTap()">
+      Powered by Smart Review System v3.0
+    </p>
   </div>
 
-  <!-- Positive Star Pop-up Modal -->
+  <!-- Positive Modal (Customer) -->
   <div class="popup-overlay" id="positiveModal">
     <div class="popup-box">
       <div class="popup-stars">⭐⭐⭐⭐⭐</div>
       <div class="copied-badge">✅ Review Auto-Copied!</div>
       <h2 class="popup-title">Thank You! 🎉</h2>
-      <div class="copied-preview" id="copiedReviewPreview"></div>
+      <textarea class="copy-box" id="positiveCopyBox" inputmode="none"></textarea>
       <p class="popup-text">Opening Google Maps... Just <b>Long-Press & Paste</b> your review there!</p>
-      <button class="action-btn" id="continueGoogleBtn">Paste & Post on Google Now</button>
+      <button type="button" class="action-btn" id="continueGoogleBtn">Paste & Post on Google Now</button>
+      <button type="button" class="close-btn" onclick="closeModals()">Cancel</button>
     </div>
   </div>
 
-  <!-- Negative Feedback Pop-up Modal (WhatsApp) -->
+  <!-- Negative Modal (Customer -> Direct Owner WhatsApp) -->
   <div class="popup-overlay" id="negativeModal">
     <div class="popup-box">
       <div class="copied-badge">✅ Feedback Auto-Copied!</div>
       <h2 class="popup-title">We Value Your Feedback 🙏</h2>
-      <p class="popup-text">Your message is copied & ready below. Send it directly to the owner on WhatsApp:</p>
-      <textarea class="feedback-input" id="customFeedback"></textarea>
-      <button class="action-btn" onclick="sendWhatsAppFeedback()">Send Directly to Owner</button>
-      <button class="close-btn" onclick="closeModals()">Cancel</button>
+      <p class="popup-text">Opening Owner's WhatsApp directly so we can resolve this immediately:</p>
+      <textarea class="copy-box" id="negativeCopyBox"></textarea>
+      <button type="button" class="action-btn" onclick="sendWhatsAppFeedback()">Send Directly on WhatsApp</button>
+      <button type="button" class="close-btn" onclick="closeModals()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- SECRET ADMIN MODAL (Only For You) -->
+  <div class="popup-overlay" id="adminModal">
+    <div class="popup-box">
+      <h2 class="popup-title">🛠️ Client Link Generator</h2>
+      <p class="popup-text">Enter client details below to create their NFC & QR link:</p>
+
+      <div class="form-group">
+        <label class="form-label">1. Shop / Business Name</label>
+        <input type="text" class="form-input" id="adminShopInput" placeholder="e.g. Vellora Cafe and Restro" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">2. Owner WhatsApp Number</label>
+        <input type="tel" class="form-input" id="adminWaInput" placeholder="e.g. 9512083000" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">3. Google Review / Maps Link</label>
+        <input type="url" class="form-input" id="adminMapInput" placeholder="e.g. https://maps.app.goo.gl/4xEtSgUaVoJfoUGG7" />
+      </div>
+
+      <button type="button" class="action-btn" onclick="generateClientLink()">⚡ Generate NFC Link</button>
+
+      <div class="admin-result-section" id="adminResultSection">
+        <div class="byte-counter byte-ok" id="byteCountBadge">0 / 144 Bytes</div>
+        <textarea class="copy-box" id="generatedLinkBox" style="height: 75px;"></textarea>
+        <button type="button" class="action-btn" style="background:#16a34a;" onclick="copyGeneratedLink()">📋 Copy Client Link</button>
+        <button type="button" class="secondary-btn" onclick="testGeneratedLink()">🚀 Open & Test This Shop Live</button>
+      </div>
+
+      <button type="button" class="close-btn" onclick="closeModals()">Close Admin Panel</button>
     </div>
   </div>
 
   <script>
-    // 1. Read URL Parameters (Supports both new 's, w, m' and old 'shop, wa, g')
     const params = new URLSearchParams(window.location.search);
 
-    const shopName = params.get('s') || params.get('shop') || 'this place';
-    const rawWa = params.get('w') || params.get('wa') || '';
+    const shopName = params.get('s') || params.get('shop') || 'Vellora Cafe and Restro';
+    const rawWa = params.get('w') || params.get('wa') || '919512083000';
     const whatsappNumber = rawWa.replace(/[^0-9]/g, '');
 
-    const rawMap = params.get('m') || params.get('g') || '';
-    const googleMapsUrl = rawMap
-      ? (rawMap.startsWith('http') ? rawMap : `https://maps.app.goo.gl/${rawMap}`)
-      : 'https://www.google.com/maps';
+    const rawMap = params.get('m') || params.get('g') || '4xEtSgUaVoJfoUGG7';
+    const googleMapsUrl = rawMap.startsWith('http')
+      ? rawMap
+      : `https://maps.app.goo.gl/${rawMap}`;
 
-    // Set Shop Name on UI
-    document.getElementById('shopNameDisplay').textContent =
-      shopName === 'this place' ? 'Welcome!' : shopName;
-    if (shopName !== 'this place') {
-      document.title = `${shopName} - Review`;
+    document.getElementById('shopNameDisplay').textContent = shopName;
+    document.title = `${shopName} - Review`;
+
+    // If URL has ?admin=1, open Admin Panel directly
+    if (params.get('admin') === '1') {
+      openAdminModal();
     }
 
-    let latestCopiedText = '';
+    let currentText = '';
     let redirectTimer = null;
+    let tapCount = 0;
+    let tapTimer = null;
 
-    // 2. Sentences for ALL 6 Options + Stars
-    function getOptionSentence(type) {
+    // Secret 3-Tap Trigger on Footer
+    function handleSecretTap() {
+      tapCount++;
+      if (tapTimer) clearTimeout(tapTimer);
+      tapTimer = setTimeout(function () {
+        tapCount = 0;
+      }, 1200);
+
+      if (tapCount >= 3) {
+        tapCount = 0;
+        openAdminModal();
+      }
+    }
+
+    function openAdminModal() {
+      document.getElementById('adminShopInput').value = shopName;
+      document.getElementById('adminWaInput').value = whatsappNumber;
+      document.getElementById('adminMapInput').value = googleMapsUrl;
+      document.getElementById('adminModal').style.display = 'flex';
+    }
+
+    function generateClientLink() {
+      const sInput = document.getElementById('adminShopInput').value.trim() || 'Our Store';
+      let wInput = document.getElementById('adminWaInput').value.replace(/[^0-9]/g, '');
+      let mInput = document.getElementById('adminMapInput').value.trim();
+
+      // Auto-add 91 if 10-digit Indian mobile number is entered
+      if (wInput.length === 10) {
+        wInput = '91' + wInput;
+      }
+
+      // Strip 'https://maps.app.goo.gl/' to save NFC bytes automatically
+      if (mInput.includes('maps.app.goo.gl/')) {
+        mInput = mInput.split('maps.app.goo.gl/')[1].split('?')[0].replace(/\/$/, '');
+      }
+
+      const baseUrl = window.location.origin + window.location.pathname;
+      const newParams = new URLSearchParams();
+      newParams.set('s', sInput);
+      if (wInput) newParams.set('w', wInput);
+      if (mInput) newParams.set('m', mInput);
+
+      const finalUrl = `${baseUrl}?${newParams.toString()}`;
+      const byteLength = finalUrl.length + 10; // URL length + NDEF overhead
+
+      document.getElementById('adminResultSection').style.display = 'block';
+      const badge = document.getElementById('byteCountBadge');
+
+      if (byteLength <= 137) {
+        badge.className = 'byte-counter byte-ok';
+        badge.textContent = `✅ ${byteLength} / 137 Bytes (Fits NTAG213 Easily)`;
+      } else {
+        badge.className = 'byte-counter byte-warn';
+        badge.textContent = `⚠️ ${byteLength} Bytes (Shorten Shop Name for NTAG213)`;
+      }
+
+      copyFromVisibleBox('generatedLinkBox', finalUrl);
+    }
+
+    function copyGeneratedLink() {
+      const linkText = document.getElementById('generatedLinkBox').value;
+      copyFromVisibleBox('generatedLinkBox', linkText);
+      alert('Client Link Copied! Ready to paste in NFC Tools or QR generator.');
+    }
+
+    function testGeneratedLink() {
+      const linkText = document.getElementById('generatedLinkBox').value;
+      if (linkText) {
+        window.location.href = linkText;
+      }
+    }
+
+    function getSentence(type) {
       const sentences = {
         service: `Had a wonderful experience at ${shopName}! The staff is super polite and the service is quick and excellent. Highly recommended!`,
         quality: `Amazing quality and great overall experience at ${shopName}! Everything was top-notch and exceeded expectations. Must visit!`,
         ambience: `Loved the great ambience, hygiene, and positive vibe at ${shopName}! A perfect spot to visit with friends and family.`,
         value: `100% value for money at ${shopName}! Great quality, reasonable pricing, and fantastic service. Will definitely visit again!`,
-        slow: `Hi ${shopName} team, I visited recently. The service and wait time were a bit slow and need improvement.`,
-        improve: `Hi ${shopName} team, I visited recently. Overall experience was okay, but quality and service could be better.`,
+        slow: `Hello ${shopName} Owner, I visited recently and wanted to share private feedback: The service and wait time were a bit slow today. Please look into it.`,
+        improve: `Hello ${shopName} Owner, I visited recently and wanted to share private feedback: Overall experience was okay, but quality and service could be improved.`,
         stars: `Had a 5-star experience at ${shopName}! Great service, awesome quality, and wonderful atmosphere. Highly recommended!`
       };
       return sentences[type] || sentences.stars;
     }
 
-    // 3. 100% Mobile-Safe Auto-Copy Function (Android + iPhone + In-App Browsers)
-    async function copyTextToClipboard(text) {
-      // Step A: Synchronous In-Viewport Textarea Copy (Works inside every mobile click gesture)
+    function copyFromVisibleBox(boxId, text) {
+      const box = document.getElementById(boxId);
+      box.value = text;
       try {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.setAttribute('readonly', '');
-        textArea.style.position = 'fixed';
-        textArea.style.top = '0';
-        textArea.style.left = '0';
-        textArea.style.width = '2em';
-        textArea.style.height = '2em';
-        textArea.style.padding = '0';
-        textArea.style.border = 'none';
-        textArea.style.outline = 'none';
-        textArea.style.boxShadow = 'none';
-        textArea.style.background = 'transparent';
-        textArea.style.opacity = '0.01';
-        document.body.appendChild(textArea);
-
-        textArea.focus({ preventScroll: true });
-        textArea.select();
-        textArea.setSelectionRange(0, 999999); // Mandatory for Android/iOS selection
+        box.focus({ preventScroll: true });
+        box.select();
+        box.setSelectionRange(0, text.length);
         document.execCommand('copy');
-        document.body.removeChild(textArea);
-      } catch (err) {}
+      } catch (e) {}
 
-      // Step B: Modern Clipboard API on HTTPS
-      if (navigator.clipboard && window.isSecureContext) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
         try {
-          await navigator.clipboard.writeText(text);
-        } catch (err) {}
+          navigator.clipboard.writeText(text).catch(function () {});
+        } catch (e) {}
       }
     }
 
-    // 4. Unified Click Handler for ALL 6 Options
-    async function handleOptionClick(type, isPositive) {
-      latestCopiedText = getOptionSentence(type);
-
-      // Immediately copy on button tap
-      await copyTextToClipboard(latestCopiedText);
+    function triggerOption(type, isPositive) {
+      currentText = getSentence(type);
 
       if (isPositive) {
-        document.getElementById('copiedReviewPreview').textContent = `"${latestCopiedText}"`;
-        document.getElementById('positiveModal').style.display = 'flex';
+        const modal = document.getElementById('positiveModal');
+        modal.style.display = 'flex';
+        copyFromVisibleBox('positiveCopyBox', currentText);
 
-        document.getElementById('continueGoogleBtn').onclick = async function () {
+        document.getElementById('continueGoogleBtn').onclick = function () {
           if (redirectTimer) clearTimeout(redirectTimer);
-          await copyTextToClipboard(latestCopiedText);
+          copyFromVisibleBox('positiveCopyBox', currentText);
           window.location.href = googleMapsUrl;
         };
 
         if (redirectTimer) clearTimeout(redirectTimer);
-        redirectTimer = setTimeout(() => {
+        redirectTimer = setTimeout(function () {
           window.location.href = googleMapsUrl;
-        }, 1400);
+        }, 1500);
       } else {
-        // Negative option: Also auto-copied to clipboard AND pre-filled in textarea
-        document.getElementById('customFeedback').value = latestCopiedText;
-        document.getElementById('negativeModal').style.display = 'flex';
+        const modal = document.getElementById('negativeModal');
+        modal.style.display = 'flex';
+        copyFromVisibleBox('negativeCopyBox', currentText);
+
+        const waDirectUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(currentText)}`;
+
+        if (redirectTimer) clearTimeout(redirectTimer);
+        redirectTimer = setTimeout(function () {
+          window.location.href = waDirectUrl;
+        }, 1200);
       }
     }
 
-    // 5. Send Negative Feedback to Owner's WhatsApp
-    async function sendWhatsAppFeedback() {
-      const finalMessage = document.getElementById('customFeedback').value.trim() || latestCopiedText;
-      await copyTextToClipboard(finalMessage);
-
-      if (whatsappNumber) {
-        window.location.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(finalMessage)}`;
-      } else {
-        alert('Feedback copied to clipboard!');
-        closeModals();
-      }
+    function sendWhatsAppFeedback() {
+      if (redirectTimer) clearTimeout(redirectTimer);
+      const finalMsg = document.getElementById('negativeCopyBox').value.trim() || currentText;
+      copyFromVisibleBox('negativeCopyBox', finalMsg);
+      window.location.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(finalMsg)}`;
     }
 
     function closeModals() {
       if (redirectTimer) clearTimeout(redirectTimer);
       document.getElementById('positiveModal').style.display = 'none';
       document.getElementById('negativeModal').style.display = 'none';
+      document.getElementById('adminModal').style.display = 'none';
     }
   </script>
 </body>
