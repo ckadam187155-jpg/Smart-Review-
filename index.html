@@ -844,7 +844,8 @@
 
       const chosenPos = shuffleArray(posPool).slice(0, 4).map(item => ({ ...item, type: "positive" }));
       const chosenNeg = shuffleArray(negPool).slice(0, 2).map(item => ({ ...item, type: "negative" }));
-      const finalSix = shuffleArray(chosenPos.concat(chosenNeg));
+      const finalSix = chosenPos.concat(chosenNeg);
+      
 
       grid.innerHTML = "";
       finalSix.forEach(opt => {
