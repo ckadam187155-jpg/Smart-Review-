@@ -10,7 +10,7 @@
   <style>
     :root {
       --bg-grad: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #ffedd5 100%);
-      --card-bg: rgba(255, 255, 255, 0.96);
+      --card-bg: rgba(255, 255, 255, 0.97);
       --primary: #ea580c;
       --google-blue: #1a73e8;
       --whatsapp-green: #16a34a;
@@ -86,6 +86,13 @@
       line-height: 1.2;
       margin-bottom: 6px;
       word-break: break-word;
+    }
+
+    .scan-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #16a34a;
+      margin-bottom: 6px;
     }
 
     .subtitle {
@@ -184,7 +191,7 @@
       background: #ffedd5;
     }
 
-    /* 6 Options Grid (4 Positive + 2 Negative) */
+    /* 6 Options Grid (4 Positive Top + 2 Negative Bottom) */
     .options-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -403,16 +410,24 @@
       margin-bottom: 0;
     }
 
-    /* Admin Link Builder (Locked Behind Base URL + #myadmin) */
+    /* Admin Link & QR Builder (Locked for Customers) */
     .admin-panel {
       display: none;
-      margin-top: 20px;
+      margin-top: 22px;
       padding-top: 18px;
       border-top: 2px dashed var(--border);
     }
 
     .admin-panel.active {
       display: block;
+    }
+
+    .admin-head {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 12px;
+      text-align: center;
     }
 
     .field-label {
@@ -435,26 +450,57 @@
 
     .byte-box {
       background: #f8fafc;
-      border: 1px solid var(--border);
-      padding: 12px;
-      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      padding: 14px;
+      border-radius: 16px;
       font-size: 0.78rem;
-      margin-top: 10px;
+      margin-top: 12px;
+      text-align: center;
       word-break: break-all;
+    }
+
+    .qr-card {
+      background: #ffffff;
+      padding: 12px;
+      display: inline-block;
+      border-radius: 16px;
+      margin: 10px 0;
+      border: 1.5px solid #cbd5e1;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .qr-shop-name {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .qr-sub-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 6px;
+    }
+
+    .admin-btn-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
 
   <main class="container">
-        <div class="header">
+    <div class="header">
       <span id="categoryBadge" class="badge-top">✨ Tap Any Option for Instant Review</span>
       <h1 id="bizNameHeading" class="business-title">Share Your Experience</h1>
-      <!-- Yeh naya line QR aur NFC dono ke liye add karna hai -->
-      <p style="font-size: 0.78rem; font-weight: 700; color: #16a34a; margin-bottom: 6px;">📱 Scanned via QR / Tap via NFC</p>
+      <p class="scan-tag">📱 Scanned via QR / Tap via NFC</p>
       <p class="subtitle">Select 1 highlight below — we'll copy your note & open Google or WhatsApp in 3 seconds!</p>
-        </div>
-    
+    </div>
 
     <!-- Joyful 5-Star Mood Box -->
     <section class="mood-box">
@@ -477,7 +523,7 @@
       </button>
     </div>
 
-    <!-- Pre-rendered Fallback Options (Guaranteed Visible + Instant JS Shuffle) -->
+    <!-- Pre-rendered Fallback Options (Top 4 Positive, Bottom 2 Negative) -->
     <div id="optionsGrid" class="options-grid">
       <button type="button" class="option-chip positive" onclick="triggerFlow('positive', 'Warm & Polite Staff', 'Had a wonderful visit! The staff was super polite and welcoming throughout.')">
         <div class="chip-top"><span class="chip-icon">🌟</span><span class="chip-tag">Google ★</span></div>
@@ -504,16 +550,17 @@
         <span class="chip-label">Service Needs Focus</span>
       </button>
     </div>
-
-    <!-- Clean Footer (No 3-Tap Trigger - Safe from Customer Taps) -->
+        <!-- Clean Footer (No 3-Tap Trigger - Safe from Customer Taps) -->
     <div class="footer-bar">
       ⚡ Powered by Smart Review System
     </div>
 
-    <!-- Admin Link Builder Panel (Blocked on Customer Links) -->
+    <!-- Admin Link & QR Builder Panel (Blocked on Customer Links) -->
     <section id="adminSection" class="admin-panel">
+      <div class="admin-head">🛠️ Admin Client Link & QR Generator</div>
+
       <label class="field-label" for="admBizName">Business Name</label>
-      <input type="text" id="admBizName" class="admin-input" maxlength="60" placeholder="e.g., Royal Salon & Spa" />
+      <input type="text" id="admBizName" class="admin-input" maxlength="60" placeholder="e.g., Tulsi Snacks" />
 
       <label class="field-label" for="admCategory">Select Shop Category</label>
       <select id="admCategory" class="admin-select">
@@ -524,28 +571,32 @@
       </select>
 
       <label class="field-label" for="admGoogleUrl">Google Review Link (HTTPS)</label>
-      <input type="url" id="admGoogleUrl" class="admin-input" placeholder="https://g.page/r/..." />
+      <input type="url" id="admGoogleUrl" class="admin-input" placeholder="https://maps.app.goo.gl/..." />
 
       <label class="field-label" for="admPhone">Owner WhatsApp Number</label>
-      <input type="tel" id="admPhone" class="admin-input" placeholder="919876543210" />
+      <input type="tel" id="admPhone" class="admin-input" placeholder="918623854113" />
 
       <button type="button" class="btn-action btn-google" onclick="generateClientLink()">
-        🔗 Generate Client NFC Link
+        🔗 Generate Client Link & QR Code
       </button>
 
-            <div id="admOutputBox" class="byte-box" style="display:none; text-align: center;">
-        <div id="utf8ByteCount" style="font-weight:800; margin-bottom:5px;"></div>
-        <div id="generatedUrlText" style="color:var(--google-blue); margin-bottom:8px; word-break: break-all;"></div>
-        
-        <!-- Yahan QR Code image ke liye tag joda hai -->
-        <div style="background: #fff; padding: 8px; display: inline-block; border-radius: 10px; margin-bottom: 8px; border: 1px solid #cbd5e1;">
-          <img id="qrCodeImg" src="" alt="Client QR Code" style="width: 150px; height: 150px; display: block;" />
-        </div>
-        <br>
+      <div id="admOutputBox" class="byte-box" style="display:none;">
+        <div id="utf8ByteCount" style="font-weight:800; margin-bottom:6px;"></div>
 
-        <button type="button" class="shuffle-btn" onclick="copyGeneratedLink()">📋 Copy NFC Link</button>
-            </div>
-      
+        <!-- Live Generated QR Card -->
+        <div class="qr-card">
+          <div id="qrShopTitle" class="qr-shop-name">Shop QR Code</div>
+          <img id="qrCodeImg" src="" alt="Client QR Code" style="width: 170px; height: 170px; display: block; margin: 0 auto;" />
+          <div class="qr-sub-tag">📱 Scan for Instant Google Review</div>
+        </div>
+
+        <div id="generatedUrlText" style="color:var(--google-blue); margin: 8px 0; font-size: 0.74rem;"></div>
+
+        <div class="admin-btn-row">
+          <button type="button" class="shuffle-btn" onclick="copyGeneratedLink()">📋 Copy NFC Link</button>
+          <button type="button" class="shuffle-btn" onclick="downloadQrImage()">⬇️ Open / Save QR</button>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -589,7 +640,11 @@
       try {
         const parsed = new URL(trimmed);
         if (parsed.protocol === "https:" || parsed.protocol === "http:") {
-          return trimmed;
+          // Strip unnecessary Google share tracking (?g_st=ac) to save 12+ NFC bytes
+          if (parsed.searchParams.has("g_st")) {
+            parsed.searchParams.delete("g_st");
+          }
+          return parsed.toString();
         }
       } catch (e) {}
       return "";
@@ -623,8 +678,9 @@
       r: "🛍️ Happy Shopping? Tap Any Highlight!"
     };
     document.getElementById("categoryBadge").textContent = BADGE_MAP[clientCategory] || BADGE_MAP.g;
+
     /**************************************************************
-     * 2. 4 POSITIVE + 2 NEGATIVE DYNAMIC POOLS (SHUFFLES EVERY VISIT)
+     * 2. 4 POSITIVE (TOP) + 2 NEGATIVE (BOTTOM) DYNAMIC POOLS
      **************************************************************/
     const UNIVERSAL_POS = [
       {
@@ -853,10 +909,12 @@
         negPool = CATEGORY_EXTRAS[clientCategory].neg.concat(negPool);
       }
 
+      // Pick 4 random Positive and 2 random Negative
       const chosenPos = shuffleArray(posPool).slice(0, 4).map(item => ({ ...item, type: "positive" }));
       const chosenNeg = shuffleArray(negPool).slice(0, 2).map(item => ({ ...item, type: "negative" }));
+
+      // Keep 4 Positive on TOP rows and 2 Negative on BOTTOM row
       const finalSix = chosenPos.concat(chosenNeg);
-      
 
       grid.innerHTML = "";
       finalSix.forEach(opt => {
@@ -1023,7 +1081,7 @@
       const emojis = { 1: "😟", 2: "😕", 3: "🙂", 4: "😄", 5: "🤩" };
       const texts = {
         1: "Tap an orange card below to message the owner directly!",
-        2: "Tell us what went wrong — tap an option below!",
+        2: "Tell us what went wrong — tap an orange card below!",
         3: "Tap any highlight below to share your experience!",
         4: "Glad you liked it! Tap any green card for Google Review!",
         5: "Awesome! Tap any green highlight — Auto-Copies in 1 Click!"
@@ -1036,37 +1094,31 @@
     }
 
     /**************************************************************
-     * 5. LOCKED ADMIN ACCESS (DISABLED ON ALL CUSTOMER LINKS)
+     * 5. LOCKED ADMIN ACCESS & LIVE QR CODE GENERATOR
      **************************************************************/
     function checkLockedAdminAccess() {
-      // If URL has customer shop parameters (?n=, ?m=, ?p=), NEVER allow admin panel
-      if (isCustomerLink) {
-        document.getElementById("adminSection").classList.remove("active");
-        return;
-      }
-      // Only open on clean base URL when #myadmin is typed and PIN is entered
-      if (window.location.hash === "#myadmin") {
-        const pin = prompt("Enter Creator Unlock PIN:");
-        if (pin === "1871") {
-          document.getElementById("adminSection").classList.add("active");
-        } else {
-          window.location.hash = "";
-        }
+      const adminBox = document.getElementById("adminSection");
+      const hashVal = window.location.hash.toLowerCase();
+      const isSecretUrl =
+        hashVal === "#myadmin" ||
+        hashVal === "#admin" ||
+        urlParams.get("admin") === "1871";
+
+      // Never show admin panel on a customer shop link
+      if (!isCustomerLink && isSecretUrl) {
+        adminBox.classList.add("active");
       } else {
-        document.getElementById("adminSection").classList.remove("active");
+        adminBox.classList.remove("active");
       }
     }
 
     window.addEventListener("hashchange", checkLockedAdminAccess);
     checkLockedAdminAccess();
 
-          lastGeneratedUrl = base + "?" + params.toString();
-      
-      // 👇 Yeh wali line beech mein add karni hai:
-      document.getElementById("qrCodeImg").src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(lastGeneratedUrl);
+    let lastGeneratedUrl = "";
+    let lastQrImageUrl = "";
 
-      const utf8Bytes = new TextEncoder().encode(lastGeneratedUrl).length;
-    {
+    function generateClientLink() {
       const nameVal = sanitizeText(document.getElementById("admBizName").value, 60);
       const catVal = document.getElementById("admCategory").value;
       const mapVal = sanitizeSafeUrl(document.getElementById("admGoogleUrl").value);
@@ -1082,10 +1134,26 @@
       if (catVal !== "g") params.set("c", catVal);
 
       lastGeneratedUrl = base + "?" + params.toString();
-      const utf8Bytes = new TextEncoder().encode(lastGeneratedUrl).length;
 
-      document.getElementById("utf8ByteCount").textContent =
-        "NFC Size: " + utf8Bytes + " UTF-8 bytes (Fits NTAG213 Limit: 144 bytes)";
+      // Generate Live QR Code Image
+      lastQrImageUrl =
+        "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=10&data=" +
+        encodeURIComponent(lastGeneratedUrl);
+
+      document.getElementById("qrShopTitle").textContent = nameVal;
+      document.getElementById("qrCodeImg").src = lastQrImageUrl;
+
+      const utf8Bytes = new TextEncoder().encode(lastGeneratedUrl).length;
+      const byteEl = document.getElementById("utf8ByteCount");
+
+      if (utf8Bytes <= 137) {
+        byteEl.style.color = "#15803d";
+        byteEl.textContent = "✓ NFC Size: " + utf8Bytes + " UTF-8 bytes (Easily Fits NTAG213 - 144 bytes)";
+      } else {
+        byteEl.style.color = "#b91c1c";
+        byteEl.textContent = "⚠️ NFC Size: " + utf8Bytes + " bytes (Slightly long for NTAG213, works 100% on QR!)";
+      }
+
       document.getElementById("generatedUrlText").textContent = lastGeneratedUrl;
       document.getElementById("admOutputBox").style.display = "block";
     }
@@ -1096,10 +1164,13 @@
       alert(ok ? "Client NFC Link Copied!" : "Copy failed, select and copy manually.");
     }
 
-    // Shuffle options immediately on page load
+    function downloadQrImage() {
+      if (!lastQrImageUrl) return;
+      window.open(lastQrImageUrl, "_blank");
+    }
+
+    // Initialize 4 Positive (Top) + 2 Negative (Bottom) options on page load
     renderDynamicSixOptions();
   </script>
 </body>
 </html>
-
-    
