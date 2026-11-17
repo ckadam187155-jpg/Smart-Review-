@@ -612,7 +612,6 @@
       r: "🛍️ Happy Shopping? Tap Any Highlight!"
     };
     document.getElementById("categoryBadge").textContent = BADGE_MAP[clientCategory] || BADGE_MAP.g;
-
     /**************************************************************
      * 2. 4 POSITIVE + 2 NEGATIVE DYNAMIC POOLS (SHUFFLES EVERY VISIT)
      **************************************************************/
@@ -639,4 +638,451 @@
         icon: "✨",
         label: "Clean & Great Ambience",
         templates: [
-          "Loved the clean setup and comfortable vibe of the plac
+          "Loved the clean setup and comfortable vibe of the place.",
+          "Very neat, hygienic, and pleasant atmosphere to visit.",
+          "The ambience is refreshing and really well-maintained."
+        ]
+      },
+      {
+        icon: "💎",
+        label: "Great Value for Money",
+        templates: [
+          "Fair pricing for the quality and attention they provide.",
+          "Definitely worth the visit—solid quality at a reasonable price.",
+          "Great balance of quality and pricing, felt 100% worth it."
+        ]
+      },
+      {
+        icon: "🎯",
+        label: "Top-Notch Quality",
+        templates: [
+          "The quality exceeded my expectations today. Highly recommended!",
+          "Consistent quality and genuine attention to detail.",
+          "Really happy with the high standard maintained here."
+        ]
+      },
+      {
+        icon: "😊",
+        label: "Helpful Guidance",
+        templates: [
+          "They patiently answered my questions and guided me really well.",
+          "Helpful suggestions from the staff without being pushy at all.",
+          "Very approachable team who genuinely care about customer satisfaction."
+        ]
+      },
+      {
+        icon: "🏆",
+        label: "Highly Recommended",
+        templates: [
+          "Overall a super smooth experience, would happily recommend to friends and family.",
+          "Glad I visited today—will definitely come back again!",
+          "A reliable spot with consistent service and positive energy."
+        ]
+      },
+      {
+        icon: "👌",
+        label: "Attention to Detail",
+        templates: [
+          "Small details were taken care of really thoughtfully.",
+          "You can tell they put genuine effort into getting everything right.",
+          "Careful, attentive service that truly stood out today."
+        ]
+      }
+    ];
+
+    const UNIVERSAL_NEG = [
+      {
+        icon: "⏳",
+        label: "Wait Time Was Long",
+        templates: [
+          "Hi, my visit had a longer wait time than expected today. Hope you can speed this up.",
+          "Hi Owner, service took a bit too long during my visit today. Sharing this privately so you can improve."
+        ]
+      },
+      {
+        icon: "🧹",
+        label: "Cleanliness Issue",
+        templates: [
+          "Hi, a bit more attention to cleanliness and upkeep would make the experience much better.",
+          "Hi Owner, hygiene and maintenance needed more attention during my visit today."
+        ]
+      },
+      {
+        icon: "💬",
+        label: "Staff Behaviour / Support",
+        templates: [
+          "Hi, staff coordination and responsiveness could be more attentive.",
+          "Hi Owner, I felt the staff communication could have been more helpful today."
+        ]
+      },
+      {
+        icon: "💸",
+        label: "Billing / Pricing Issue",
+        templates: [
+          "Hi, had a concern regarding the billing/pricing clarity during my visit today.",
+          "Hi Owner, felt the pricing or billing details could be handled more transparently."
+        ]
+      }
+    ];
+
+    const CATEGORY_EXTRAS = {
+      f: {
+        pos: [
+          {
+            icon: "🍲",
+            label: "Fresh & Tasty Food",
+            templates: [
+              "The food was served fresh and tasted amazing!",
+              "Loved the flavors and freshness of everything we ordered today.",
+              "Delicious food with great taste and neat presentation."
+            ]
+          },
+          {
+            icon: "☕",
+            label: "Great Menu & Portions",
+            templates: [
+              "Good variety on the menu and generous portion sizes.",
+              "Really happy with the menu selection and taste consistency!"
+            ]
+          }
+        ],
+        neg: [
+          {
+            icon: "🌡️",
+            label: "Food Taste / Temp Issue",
+            templates: [
+              "Hi Owner, the food temperature and seasoning weren't up to the mark today.",
+              "Hi, taste could be improved on the items we ordered today."
+            ]
+          }
+        ]
+      },
+      s: {
+        pos: [
+          {
+            icon: "💇",
+            label: "Awesome Styling Result",
+            templates: [
+              "Really happy with how my haircut and styling turned out today!",
+              "The stylist understood exactly what I wanted and gave a great look."
+            ]
+          },
+          {
+            icon: "🧴",
+            label: "Hygienic & Relaxing",
+            templates: [
+              "Clean station, sanitized tools, and very relaxing service!",
+              "Appreciated the neat hygiene standards and skilled care."
+            ]
+          }
+        ],
+        neg: [
+          {
+            icon: "🪞",
+            label: "Rushed Styling Session",
+            templates: [
+              "Hi Owner, felt my styling session was rushed today and needed more attention.",
+              "Hi, had to wait past my appointment slot and the service felt hurried."
+            ]
+          }
+        ]
+      },
+      r: {
+        pos: [
+          {
+            icon: "🛍️",
+            label: "Great Collection",
+            templates: [
+              "Loved the variety and fresh collection available in the store!",
+              "Found exactly what I was looking for—great range of products."
+            ]
+          },
+          {
+            icon: "🧾",
+            label: "Fast Billing & Help",
+            templates: [
+              "Staff helped me pick the right item and billing was super quick!",
+              "Smooth shopping and hassle-free checkout experience."
+            ]
+          }
+        ],
+        neg: [
+          {
+            icon: "📦",
+            label: "Stock / Size Issue",
+            templates: [
+              "Hi Owner, several sizes/items I wanted were out of stock today.",
+              "Hi, counter queue and floor assistance took too long today."
+            ]
+          }
+        ]
+      }
+    };
+
+    function shuffleArray(arr) {
+      const copy = arr.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = copy[i];
+        copy[i] = copy[j];
+        copy[j] = temp;
+      }
+      return copy;
+    }
+
+    function renderDynamicSixOptions() {
+      const grid = document.getElementById("optionsGrid");
+      if (!grid) return;
+
+      let posPool = UNIVERSAL_POS.slice();
+      let negPool = UNIVERSAL_NEG.slice();
+
+      if (CATEGORY_EXTRAS[clientCategory]) {
+        posPool = CATEGORY_EXTRAS[clientCategory].pos.concat(posPool);
+        negPool = CATEGORY_EXTRAS[clientCategory].neg.concat(negPool);
+      }
+
+      const chosenPos = shuffleArray(posPool).slice(0, 4).map(item => ({ ...item, type: "positive" }));
+      const chosenNeg = shuffleArray(negPool).slice(0, 2).map(item => ({ ...item, type: "negative" }));
+      const finalSix = shuffleArray(chosenPos.concat(chosenNeg));
+
+      grid.innerHTML = "";
+      finalSix.forEach(opt => {
+        const randomSentence = opt.templates[Math.floor(Math.random() * opt.templates.length)];
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "option-chip " + opt.type;
+
+        const topDiv = document.createElement("div");
+        topDiv.className = "chip-top";
+
+        const iconSpan = document.createElement("span");
+        iconSpan.className = "chip-icon";
+        iconSpan.textContent = opt.icon;
+
+        const tagSpan = document.createElement("span");
+        tagSpan.className = "chip-tag";
+        tagSpan.textContent = opt.type === "positive" ? "Google ★" : "Owner Chat";
+
+        topDiv.appendChild(iconSpan);
+        topDiv.appendChild(tagSpan);
+
+        const labelSpan = document.createElement("span");
+        labelSpan.className = "chip-label";
+        labelSpan.textContent = opt.label;
+
+        btn.appendChild(topDiv);
+        btn.appendChild(labelSpan);
+
+        btn.onclick = function () {
+          triggerFlow(opt.type, opt.label, randomSentence);
+        };
+
+        grid.appendChild(btn);
+      });
+    }
+
+    /**************************************************************
+     * 3. CLIPBOARD COPY + 3-SECOND AUTO-REDIRECT ENGINE
+     **************************************************************/
+    let redirectTimeout = null;
+    let countdownInterval = null;
+
+    async function copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) {}
+      try {
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        temp.style.position = "fixed";
+        temp.style.opacity = "0";
+        document.body.appendChild(temp);
+        temp.focus();
+        temp.select();
+        const ok = document.execCommand("copy");
+        temp.remove();
+        return Boolean(ok);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function triggerFlow(type, label, reviewText) {
+      clearTimers();
+
+      const copied = await copyToClipboard(reviewText);
+      const modal = document.getElementById("redirectModal");
+      const iconBadge = document.getElementById("modalIconBadge");
+      const titleEl = document.getElementById("modalTitle");
+      const subEl = document.getElementById("modalSub");
+      const previewEl = document.getElementById("copiedPreviewBox");
+      const timerText = document.getElementById("timerText");
+      const progressFill = document.getElementById("progressFill");
+      const instantGoBtn = document.getElementById("instantGoBtn");
+
+      previewEl.textContent = '"' + reviewText + '"';
+
+      let targetUrl = "";
+      if (type === "positive") {
+        const fallbackQuery = encodeURIComponent((clientName || "Business") + " Google Reviews");
+        targetUrl = clientGoogleUrl || ("https://www.google.com/maps/search/?api=1&query=" + fallbackQuery);
+
+        iconBadge.textContent = "🎉";
+        iconBadge.style.background = "#f0fdf4";
+        titleEl.textContent = copied ? "Review Auto-Copied!" : "Review Ready!";
+        subEl.style.color = "#15803d";
+        subEl.textContent = copied
+          ? "✓ Copied! Just long-press & Paste on Google Maps"
+          : "Tap & hold text above to copy for Google Maps";
+        instantGoBtn.className = "btn-action btn-google";
+        instantGoBtn.textContent = "🚀 Open Google Maps Now";
+      } else {
+        const msg = encodeURIComponent(
+          (clientName ? "[" + clientName + " Feedback] " : "") + reviewText
+        );
+        targetUrl = clientWhatsApp
+          ? ("https://wa.me/" + clientWhatsApp + "?text=" + msg)
+          : ("https://wa.me/?text=" + msg);
+
+        iconBadge.textContent = "💬";
+        iconBadge.style.background = "#fff7ed";
+        titleEl.textContent = "Connecting to Owner...";
+        subEl.style.color = "#c2410c";
+        subEl.textContent = "Sharing your feedback directly on WhatsApp for quick action";
+        instantGoBtn.className = "btn-action btn-whatsapp";
+        instantGoBtn.textContent = "💬 Open WhatsApp Now";
+      }
+
+      instantGoBtn.onclick = function () {
+        clearTimers();
+        window.location.href = targetUrl;
+      };
+
+      progressFill.style.transition = "none";
+      progressFill.style.width = "0%";
+      modal.classList.add("open");
+
+      void progressFill.offsetWidth;
+      progressFill.style.transition = "width 3s linear";
+      progressFill.style.width = "100%";
+
+      let secondsLeft = 3;
+      const destName = type === "positive" ? "Google Maps" : "WhatsApp";
+      timerText.textContent = "Redirecting to " + destName + " in " + secondsLeft + "s...";
+
+      countdownInterval = setInterval(function () {
+        secondsLeft -= 1;
+        if (secondsLeft > 0) {
+          timerText.textContent = "Redirecting to " + destName + " in " + secondsLeft + "s...";
+        } else {
+          timerText.textContent = "Opening " + destName + " now...";
+        }
+      }, 1000);
+
+      redirectTimeout = setTimeout(function () {
+        clearTimers();
+        window.location.href = targetUrl;
+      }, 3000);
+    }
+
+    function clearTimers() {
+      if (redirectTimeout) clearTimeout(redirectTimeout);
+      if (countdownInterval) clearInterval(countdownInterval);
+      redirectTimeout = null;
+      countdownInterval = null;
+    }
+
+    function cancelRedirect() {
+      clearTimers();
+      document.getElementById("redirectModal").classList.remove("open");
+    }
+
+    /**************************************************************
+     * 4. STAR BAR INTERACTION
+     **************************************************************/
+    function setStars(rating) {
+      const stars = document.querySelectorAll(".star-btn");
+      const emoji = document.getElementById("moodEmoji");
+      const caption = document.getElementById("moodCaption");
+      const emojis = { 1: "😟", 2: "😕", 3: "🙂", 4: "😄", 5: "🤩" };
+      const texts = {
+        1: "Tap an orange card below to message the owner directly!",
+        2: "Tell us what went wrong — tap an option below!",
+        3: "Tap any highlight below to share your experience!",
+        4: "Glad you liked it! Tap any green card for Google Review!",
+        5: "Awesome! Tap any green highlight — Auto-Copies in 1 Click!"
+      };
+      stars.forEach((btn, idx) => {
+        btn.classList.toggle("active", idx < rating);
+      });
+      emoji.textContent = emojis[rating] || "🤩";
+      caption.textContent = texts[rating] || texts[5];
+    }
+
+    /**************************************************************
+     * 5. LOCKED ADMIN ACCESS (DISABLED ON ALL CUSTOMER LINKS)
+     **************************************************************/
+    function checkLockedAdminAccess() {
+      // If URL has customer shop parameters (?n=, ?m=, ?p=), NEVER allow admin panel
+      if (isCustomerLink) {
+        document.getElementById("adminSection").classList.remove("active");
+        return;
+      }
+      // Only open on clean base URL when #myadmin is typed and PIN is entered
+      if (window.location.hash === "#myadmin") {
+        const pin = prompt("Enter Creator Unlock PIN:");
+        if (pin === "1871") {
+          document.getElementById("adminSection").classList.add("active");
+        } else {
+          window.location.hash = "";
+        }
+      } else {
+        document.getElementById("adminSection").classList.remove("active");
+      }
+    }
+
+    window.addEventListener("hashchange", checkLockedAdminAccess);
+    checkLockedAdminAccess();
+
+    let lastGeneratedUrl = "";
+    function generateClientLink() {
+      const nameVal = sanitizeText(document.getElementById("admBizName").value, 60);
+      const catVal = document.getElementById("admCategory").value;
+      const mapVal = sanitizeSafeUrl(document.getElementById("admGoogleUrl").value);
+      const phoneVal = sanitizePhone(document.getElementById("admPhone").value);
+
+      if (!nameVal || !mapVal || !phoneVal) {
+        alert("Please enter Business Name, valid HTTPS Google Link, and 10/12-digit WhatsApp number.");
+        return;
+      }
+
+      const base = window.location.origin + window.location.pathname;
+      const params = new URLSearchParams({ n: nameVal, m: mapVal, p: phoneVal });
+      if (catVal !== "g") params.set("c", catVal);
+
+      lastGeneratedUrl = base + "?" + params.toString();
+      const utf8Bytes = new TextEncoder().encode(lastGeneratedUrl).length;
+
+      document.getElementById("utf8ByteCount").textContent =
+        "NFC Size: " + utf8Bytes + " UTF-8 bytes (Fits NTAG213 Limit: 144 bytes)";
+      document.getElementById("generatedUrlText").textContent = lastGeneratedUrl;
+      document.getElementById("admOutputBox").style.display = "block";
+    }
+
+    async function copyGeneratedLink() {
+      if (!lastGeneratedUrl) return;
+      const ok = await copyToClipboard(lastGeneratedUrl);
+      alert(ok ? "Client NFC Link Copied!" : "Copy failed, select and copy manually.");
+    }
+
+    // Shuffle options immediately on page load
+    renderDynamicSixOptions();
+  </script>
+</body>
+</html>
+
+    
