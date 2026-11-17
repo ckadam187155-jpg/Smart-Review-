@@ -533,11 +533,19 @@
         🔗 Generate Client NFC Link
       </button>
 
-      <div id="admOutputBox" class="byte-box" style="display:none;">
+            <div id="admOutputBox" class="byte-box" style="display:none; text-align: center;">
         <div id="utf8ByteCount" style="font-weight:800; margin-bottom:5px;"></div>
-        <div id="generatedUrlText" style="color:var(--google-blue); margin-bottom:8px;"></div>
+        <div id="generatedUrlText" style="color:var(--google-blue); margin-bottom:8px; word-break: break-all;"></div>
+        
+        <!-- Yahan QR Code image ke liye tag joda hai -->
+        <div style="background: #fff; padding: 8px; display: inline-block; border-radius: 10px; margin-bottom: 8px; border: 1px solid #cbd5e1;">
+          <img id="qrCodeImg" src="" alt="Client QR Code" style="width: 150px; height: 150px; display: block;" />
+        </div>
+        <br>
+
         <button type="button" class="shuffle-btn" onclick="copyGeneratedLink()">📋 Copy NFC Link</button>
-      </div>
+            </div>
+      
     </section>
   </main>
 
