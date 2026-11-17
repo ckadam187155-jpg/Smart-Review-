@@ -1,38 +1,702 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Share your feedback</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-  body { background: #f4f6f9; color: #1e293b; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 16px; }
-  .card { background: #fff; width: 100%; max-width: 460px; border-radius: 24px; padding: 32px 24px; box-shadow: 0 12px 32px rgba(15,23,42,.08); border: 1px solid #e2e8f0; text-align: center; }
-  h1 { font-size: 26px; font-weight: 800; color: #0f172a; margin-bottom: 8px; line-height: 1.25; word-wrap: break-word; }
-  .intro { font-size: 15px; color: #475569; line-height: 1.5; margin-bottom: 20px; }
-  label { display: block; text-align: left; font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 6px; }
-  textarea { width: 100%; height: 110px; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 10px 12px; font-size: 15px; line-height: 1.4; resize: vertical; color: #0f172a; }
-  .hint { text-align: left; font-size: 12px; color: #64748b; margin: 6px 0 16px; }
-  button { width: 100%; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 10px; -webkit-tap-highlight-color: transparent; }
-  .primary { background: #2563eb; color: #fff; border: none; }
-  .secondary { background: #eff6ff; color: #1d4ed8; border: 1.5px solid #2563eb; }
-  .ghost { background: #fff; color: #334155; border: 1.5px solid #cbd5e1; font-size: 14px; padding: 12px; }
-  button:focus-visible, textarea:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
-  #status { min-height: 20px; font-size: 14px; font-weight: 600; margin-top: 4px; }
-  .ok { color: #15803d; } .err { color: #b91c1c; }
-  .note { margin-top: 18px; font-size: 12px; color: #64748b; line-height: 1.4; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Experience & Feedback</title>
+  <!-- Content Security Policy for XSS mitigation -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'none'; object-src 'none';" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #ffedd5 100%);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --primary: #ea580c;
+      --primary-hover: #c2410c;
+      --google-blue: #1a73e8;
+      --whatsapp-green: #16a34a;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --pos-bg: #f0fdf4;
+      --pos-border: #bbf7d0;
+      --pos-text: #166534;
+      --neg-bg: #fff7ed;
+      --neg-border: #fed7aa;
+      --neg-text: #9a3412;
+      --focus-ring: 0 0 0 3px rgba(234, 88, 12, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 460px;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 28px 22px;
+      box-shadow: 0 20px 45px -15px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+      animation: floatIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff7ed;
+      color: var(--primary);
+      border: 1px solid #ffedd5;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .business-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Interactive Joyful Star Bar */
+    .mood-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px 12px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .mood-emoji {
+      font-size: 2.3rem;
+      display: block;
+      margin-bottom: 6px;
+      transition: transform 0.25s ease;
+    }
+
+    .star-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 2.1rem;
+      line-height: 1;
+      color: #cbd5e1;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .star-btn.active {
+      color: #f59e0b;
+      transform: scale(1.12);
+      text-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+    }
+
+    .star-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .mood-caption {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Dynamic 6 Options Grid */
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .shuffle-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .shuffle-btn:hover {
+      background: #ffedd5;
+    }
+
+    .shuffle-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .option-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: left;
+      padding: 13px 14px;
+      border-radius: 16px;
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 76px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px -6px rgba(15, 23, 42, 0.1);
+    }
+
+    .option-chip:active {
+      transform: scale(0.97);
+    }
+
+    .option-chip:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .option-chip.positive {
+      background: var(--pos-bg);
+      border-color: var(--pos-border);
+      color: var(--pos-text);
+    }
+
+    .option-chip.negative {
+      background: var(--neg-bg);
+      border-color: var(--neg-border);
+      color: var(--neg-text);
+    }
+
+    .chip-icon {
+      font-size: 1.25rem;
+      margin-bottom: 4px;
+    }
+
+    .chip-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    .direct-actions {
+      border-top: 1px dashed var(--border);
+      padding-top: 14px;
+      text-align: center;
+    }
+
+    .direct-link-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .direct-link-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    /* Modal Styles */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1000;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.94) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .close-btn {
+      background: #f1f5f9;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .feedback-textarea {
+      width: 100%;
+      min-height: 105px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      font-size: 0.93rem;
+      line-height: 1.45;
+      color: var(--text-main);
+      resize: vertical;
+      margin-bottom: 10px;
+    }
+
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: var(--focus-ring);
+    }
+
+    .copy-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .copy-status-text {
+      color: var(--text-muted);
+    }
+
+    .copy-status-text.success {
+      color: #15803d;
+    }
+
+    .copy-status-text.error {
+      color: #b91c1c;
+    }
+
+    .copy-again-btn {
+      background: #e2e8f0;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn-action:active {
+      transform: scale(0.98);
+    }
+
+    .btn-action:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .btn-google {
+      background: var(--google-blue);
+      color: #ffffff;
+      box-shadow: 0 8px 20px -6px rgba(26, 115, 232, 0.45);
+    }
+
+    .btn-whatsapp {
+      background: var(--whatsapp-green);
+      color: #ffffff;
+      box-shadow: 0 8px 20px -6px rgba(22, 163, 74, 0.4);
+    }
+
+    .btn-secondary-outline {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1.5px solid var(--border);
+      box-shadow: none;
+    }
+
+    /* Admin Builder Panel (Local Link Generator Only) */
+    .admin-panel {
+      display: none;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 2px dashed var(--border);
+    }
+
+    .admin-panel.active {
+      display: block;
+    }
+
+    .admin-warning {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .admin-input, .admin-select {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+      background: #ffffff;
+      color: var(--text-main);
+    }
+
+    .admin-error {
+      color: #dc2626;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .byte-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      margin-top: 12px;
+      word-break: break-all;
+    }
+  </style>
 </head>
 <body>
-<main class="card">
-  <h1 id="shopName">Feedback</h1>
-  <p class="intro" id="intro">Thank you for visiting. Your honest feedback helps us improve. You can leave a public Google review or send private feedback to the business. Both options are available to everyone.</p>
 
-  <div id="content" hidden>
-    <label for="feedback">Your feedback (optional)</label>
-    <textarea id="feedback" maxlength="1000" placeholder="Write about your own experience, in your own words"></textarea>
-    <p class="hint">What did you enjoy? What could we improve? Nothing is filled in for you.</p>
+  <main class="container" aria-labelledby="bizNameHeading">
+    <div class="header">
+      <span id="categoryBadge" class="badge-top">✨ Quick & Honest Feedback</span>
+      <h1 id="bizNameHeading" class="business-title">Share Your Experience</h1>
+      <p class="subtitle">Thank you for visiting! Your honest feedback helps us improve. Both public Google review and private feedback options are available to everyone.</p>
+    </div>
 
-    <button type="button" class="primary" id="openGoogle">Open Google review page</button>
-    <button type="button" class="secondary" id="sendPrivate">Send private feedback on WhatsApp</button>
-    <button type="button" class="ghost" id="copyBtn">Copy my text</button>
+    <!-- Interactive Joyful Rating Bar -->
+    <section class="mood-box" aria-label="Experience mood selector">
+      <span id="moodEmoji" class="mood-emoji" aria-hidden="true">😊</span>
+      <div class="star-row" role="group" aria-label="Select star rating">
+        <button type="button" class="star-btn active" data-star="1" aria-label="1 Star">★</button>
+        <button type="button" class="star-btn active" data-star="2" aria-label="2 Stars">★</button>
+        <button type="button" class="star-btn active" data-star="3" aria-label="3 Stars">★</button>
+        <button type="button" class="star-btn active" data-star="4" aria-label="4 Stars">★</button>
+        <button type="button" class="star-btn active" data-star="5" aria-label="5 Stars">★</button>
+      </div>
+      <p id="moodCaption" class="mood-caption">Tap a highlight below or write your own thoughts!</p>
+    </section>
+
+    <!-- Dynamic 4 Positive + 2 Negative Section -->
+    <div class="section-head">
+      <span class="section-title">Quick Experience Highlights</span>
+      <button type="button" id="refreshOptionsBtn" class="shuffle-btn" aria-label="Shuffle feedback options">
+        🔄 New Options
+      </button>
+    </div>
+
+    <div id="optionsGrid" class="options-grid" role="region" aria-live="polite"></div>
+
+    <div class="direct-actions">
+      <button type="button" id="writeOwnBtn" class="direct-link-btn">
+        Skip highlights & write your own feedback directly →
+      </button>
+    </div>
+
+    <!-- Local Link Builder (Only visible when URL ends with #admin) -->
+    <section id="adminSection" class="admin-panel" aria-label="Client Link Generator">
+      <div class="admin-warning">
+        <strong>Admin Link Builder:</strong> Static tool for generating validated client URLs locally. Do not enter private passwords or secrets.
+      </div>
+
+      <label class="field-label" for="admBizName">Business Name (Max 60 chars)</label>
+      <input type="text" id="admBizName" class="admin-input" maxlength="60" placeholder="e.g., Aroma Cafe & Bistro" />
+
+      <label class="field-label" for="admCategory">Business Category (Hybrid Pool)</label>
+      <select id="admCategory" class="admin-select">
+        <option value="g">🌐 Universal / All-in-One (Saves NFC Bytes)</option>
+        <option value="f">🍔 Food, Cafe & Restaurant</option>
+        <option value="s">✂️ Salon, Spa & Makeover</option>
+        <option value="r">🛍️ Retail, Boutique & Showroom</option>
+      </select>
+
+      <label class="field-label" for="admGoogleUrl">HTTPS Google Review Link</label>
+      <input type="url" id="admGoogleUrl" class="admin-input" placeholder="https://g.page/r/..." />
+
+      <label class="field-label" for="admPhone">Owner WhatsApp (With Country Code, Digits Only)</label>
+      <input type="tel" id="admPhone" class="admin-input" placeholder="919876543210" />
+
+      <p id="admErrorMsg" class="admin-error" role="alert"></p>
+
+      <button type="button" id="generateLinkBtn" class="btn-action btn-google">Generate Validated NFC Link</button>
+
+      <div id="admOutputBox" class="byte-box" style="display:none;">
+        <div id="utf8ByteCount" style="font-weight:700; margin-bottom:6px;"></div>
+        <div id="generatedUrlText" style="color:var(--google-blue); margin-bottom:8px;"></div>
+        <button type="button" id="copyGeneratedUrlBtn" class="copy-again-btn">Copy NFC URL</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Accessible Review & Feedback Modal -->
+  <div id="feedbackModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modalTitle" class="modal-title">Your Experience Note</h2>
+        <button type="button" id="closeModalBtn" class="close-btn" aria-label="Close modal">✕</button>
+      </div>
+
+      <label class="field-label" for="customerFeedback">
+        Edit this draft or write your own honest experience (optional):
+      </label>
+      <textarea
+        id="customerFeedback"
+        class="feedback-textarea"
+        maxlength="1000"
+        placeholder="What did you enjoy? What could we improve?"
+      ></textarea>
+
+      <div class="copy-status-bar">
+        <span id="copyStatusText" class="copy-status-text" aria-live="polite">
+          You can copy your text before opening Google.
+        </span>
+        <button type="button" id="manualCopyBtn" class="copy-again-btn">📋 Copy Text</button>
+      </div>
+
+      <!-- Both options are always visible to every customer (No Review Gating) -->
+      <div class="modal-actions">
+        <button type="button" id="openGoogleReview" class="btn-action btn-google">
+          🌐 Open Google Review Page
+        </button>
+        <button type="button" id="sendPrivateFeedback" class="btn-action btn-whatsapp">
+          💬 Send Private Feedback (WhatsApp)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**************************************************************
+     * 1. CYBER SECURITY & STRICT URL / INPUT VALIDATION
+     **************************************************************/
+    const ALLOWED_GOOGLE_HOSTS = [
+      "google.com",
+      "www.google.com",
+      "maps.google.com",
+      "g.page",
+      "maps.app.goo.gl",
+      "goo.gl",
+      "search.google.com"
+    ];
+
+    function isValidGoogleReviewUrl(rawUrl) {
+      if (!rawUrl || typeof rawUrl !== "string") return false;
+      try {
+        const parsed = new URL(rawUrl.trim());
+        if (parsed.protocol !== "https:") return false;
+        const host = parsed.hostname.toLowerCase();
+        return ALLOWED_GOOGLE_HOSTS.some(
+          allowed => host === allowed || host.endsWith("." + allowed)
+        );
+      } catch {
+        return false;
+      }
+    }
+
+    function normalizePhone(rawPhone) {
+      if (!rawPhone || typeof rawPhone !== "string") return "";
+      const digits = rawPhone.replace(/\D/g, "");
+      if (digits.length >= 7 && digits.length <= 15) {
+        return digits;
+      }
+      return "";
+    }
+
+    function sanitizeBusinessName(rawName) {
+      if (!rawName || typeof rawName !== "string") return "";
+      return rawName.trim().slice(0, 60);
+    }
+
+    function sanitizeCategory(rawCat) {
+      const valid = ["g", "f", "s", "r"];
+      const clean = (rawCat || "g").toLowerCase().trim();
+      return valid.includes(clean) ? clean : "g";
+    }
+
+    // Parse query params safely
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientName = sanitizeBusinessName(urlParams.get("n"));
+    const rawMapParam = urlParams.get("m") || "";
+    const clientGoogleUrl = isValidGoogleReviewUrl(rawMapParam) ? rawMapParam.trim() : "";
+    const clientWhatsApp = normalizePhone(urlParams.get("p") || "");
+    const clientCategory = sanitizeCategory(urlParams.get("c"));
+
+    const bizNameHeading = document.getElementById("bizNameHeading");
+    const categoryBadge = document.getElementById("categoryBadge");
+
+    if (clientName) {
+      bizNameHeading.textContent = clientName;
+      document.title = `${clientName} - Feedback`;
+    }
+
+    const BADGE_LABELS = {
+      g: "✨ Quick & Honest Feedback",
+      f: "🍽️ Dining & Cafe Feedback",
+      s: "💇‍♀️ Salon & Grooming Feedback",
+      r: "🛍️ Shopping Experience"
+    };
+    categoryBadge.textContent = BADGE_LABELS[clientCategory] || BADGE_LABELS.g;
+
+    /**************************************************************
+     * 2. HYBRID UNIVERSAL + CATEGORY POOLS (4 POS + 2 NEG)
+     **************************************************************/
+    const UNIVERSAL_POS = [
+      {
+        icon: "🌟",
+        label: "Warm & Polite Staff",
+        templates: [
+          "Had a wonderful visit! The team was polite and welcoming throughout.",
+          "Really appreciated how courteous and
