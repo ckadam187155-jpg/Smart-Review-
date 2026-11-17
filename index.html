@@ -1060,8 +1060,13 @@
     window.addEventListener("hashchange", checkLockedAdminAccess);
     checkLockedAdminAccess();
 
-    let lastGeneratedUrl = "";
-    function generateClientLink() {
+          lastGeneratedUrl = base + "?" + params.toString();
+      
+      // 👇 Yeh wali line beech mein add karni hai:
+      document.getElementById("qrCodeImg").src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(lastGeneratedUrl);
+
+      const utf8Bytes = new TextEncoder().encode(lastGeneratedUrl).length;
+    {
       const nameVal = sanitizeText(document.getElementById("admBizName").value, 60);
       const catVal = document.getElementById("admCategory").value;
       const mapVal = sanitizeSafeUrl(document.getElementById("admGoogleUrl").value);
