@@ -659,7 +659,9 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     const clientName = sanitizeText(urlParams.get("n"), 60);
-    const clientGoogleUrl = sanitizeSafeUrl(urlParams.get("m"));
+    const rawM = urlParams.get("m") || "";
+    const normalizedM = rawM && !rawM.startsWith("http") ? `https://${rawM}` : rawM;
+    const clientGoogleUrl = sanitizeSafeUrl(normalizedM);
     const clientWhatsApp = sanitizePhone(urlParams.get("p"));
     const clientCategory = sanitizeText(urlParams.get("c"), 2).toLowerCase() || "g";
 
